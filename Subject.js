@@ -9,6 +9,14 @@ function addSubjectActivity(subject, activity, time) {
     renderSubjects();
 }
 
+function removeSubjectActivity(subject, activity) {
+    subjectList = subjectList.filter(function(item) {
+        return !(item.subject.toLowerCase() === subject.toLowerCase() && 
+                 item.activity.toLowerCase() === activity.toLowerCase());
+    });
+    renderSubjects();
+}
+
 function renderSubjects() {
     var box = document.getElementById("subjects-list");
     if (!box) return;
