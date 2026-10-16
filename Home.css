@@ -1,0 +1,329 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #ebebeb;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.top-banner {
+    background-color: #9fe2ec;
+    padding: 15px 40px;
+    border-bottom: 2px solid #2b5563;
+    width: 100%;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-img {
+    height: 60px;
+    width: auto;
+}
+
+.header-text {
+    flex-grow: 1;
+}
+
+.header-text h1 {
+    margin: 0;
+    font-size: 30px;
+    color: #1a3c5a;
+    font-weight: normal;
+}
+
+.header-line {
+    border: 0;
+    height: 1px;
+    background-color: #2b5563;
+    margin: 5px 0 7px 0;
+}
+
+.header-text p {
+    margin: 0;
+    font-size: 13px;
+    color: #222;
+}
+
+.dashboard-container {
+    flex: 1;
+    display: flex;
+    padding: 25px 40px;
+    gap: 40px;
+    width: 100%;
+}
+
+.calendar-section {
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+}
+
+.month-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.month-nav .nav-btn {
+    cursor: pointer;
+    user-select: none;
+}
+
+.month-nav h2 {
+    margin: 0;
+    font-weight: normal;
+    font-size: 26px;
+}
+
+.calendar-wrapper {
+    width: 100%;
+    flex: 1;
+    border: 2px solid #222;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #e9f8f9;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-grid {
+    width: 100%;
+    flex: 1;
+    border-collapse: collapse;
+    background-color: #e9f8f9;
+}
+
+.calendar-grid th {
+    background-color: #f3e1c8;
+    border: 1px solid #222;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.calendar-grid td {
+    border: 1px solid #222;
+    width: 14.28%;
+    vertical-align: top;
+    padding: 6px;
+    font-size: 16px;
+    height: 90px;
+}
+
+.cell-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.red-dot {
+    width: 9px;
+    height: 9px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+    max-height: 60px;
+    overflow-y: auto;
+}
+
+.event-details::-webkit-scrollbar {
+    width: 4px;
+}
+
+.event-details::-webkit-scrollbar-thumb {
+    background-color: #d18a8c;
+    border-radius: 4px;
+}
+
+.event-item {
+    font-size: 13px;
+    line-height: 1.25;
+    color: #222;
+    border-bottom: 1px dashed #bbb;
+    padding-bottom: 3px;
+}
+
+.event-item:last-child {
+    border-bottom: none;
+}
+
+.right-panel {
+    flex: 1.3;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.assignment-box {
+    background-color: #f5e3ca;
+    border: 1.5px solid #222;
+    border-radius: 10px;
+    padding: 20px 25px;
+    width: 100%;
+}
+
+.assignment-box h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.form-grid {
+    display: flex;
+    gap: 40px;
+}
+
+.form-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+.form-row label {
+    white-space: nowrap;
+}
+
+.form-row input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #222;
+    background: transparent;
+    outline: none;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.ampm-select {
+    border: 1px solid #222;
+    background-color: #f7d5a5;
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-container {
+    justify-content: flex-end;
+    margin-top: 5px;
+    gap: 10px;
+}
+
+.cancel-btn, .add-btn {
+    background-color: #f7d5a5;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.bottom-row {
+    flex: 1;
+    display: flex;
+    gap: 30px;
+    align-items: stretch;
+}
+
+.notes-block {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-block h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.add-subject-row {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.add-subject-row input {
+    flex: 1;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 5px;
+    font-family: inherit;
+    font-size: 13px;
+    background: #fff;
+}
+
+.add-subject-row button {
+    background-color: #a4e4ec;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.remove-btn {
+    background-color: #f3b1b3 !important;
+}
+
+.divider {
+    width: 1px;
+    background-color: #777;
+    align-self: stretch;
+}
+
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.note-btn {
+    background-color: #a4e4ec;
+    border: 1.5px solid #222;
+    border-radius: 20px;
+    padding: 10px 0;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+}

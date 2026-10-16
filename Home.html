@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NoteMatics Dashboard</title>
+    <link rel="stylesheet" href="Home.css">
+    <link rel="stylesheet" href="Subject.css">
+</head>
+<body>
+
+    <header class="top-banner">
+        <div class="logo-area">
+            <img src="img/logo.png" alt="Logo" class="logo-img">
+            <div class="header-text">
+                <h1>NoteMatics</h1>
+                <hr class="header-line">
+                <p>Smart note-taking meets seamless schedule reminders.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        
+        <section class="calendar-section">
+            <div class="month-nav">
+                <span id="prev-month-btn" class="nav-btn">&lt;</span>
+                <h2 id="month-title">Jan</h2>
+                <span id="next-month-btn" class="nav-btn">&gt;</span>
+            </div>
+
+            <div class="calendar-wrapper">
+                <table class="calendar-grid">
+                    <thead>
+                        <tr>
+                            <th>SUN</th>
+                            <th>MON</th>
+                            <th>TUE</th>
+                            <th>WED</th>
+                            <th>THU</th>
+                            <th>FRI</th>
+                            <th>SAT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="right-panel">
+            
+            <div class="assignment-box">
+                <h3>Add Assignment</h3>
+                <div class="form-grid">
+                    <div class="form-col">
+                        <div class="form-row">
+                            <label>Month:</label>
+                            <input type="text" id="input-month">
+                        </div>
+                        <div class="form-row">
+                            <label>Day:</label>
+                            <input type="number" id="input-day">
+                        </div>
+                        <div class="form-row">
+                            <label>Time:</label>
+                            <input type="text" id="input-time">
+                            <select id="input-ampm" class="ampm-select">
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-row">
+                            <label>Name of Activity:</label>
+                            <input type="text" id="input-activity">
+                        </div>
+                        <div class="form-row">
+                            <label>Subject:</label>
+                            <input type="text" id="input-subject">
+                        </div>
+                        <div class="form-row btn-container">
+                            <button id="cancel-btn" class="cancel-btn">Cancel</button>
+                            <button id="add-btn" class="add-btn">Add to calender</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-row">
+                <div class="subjects-block">
+                    <h3>Subjects</h3>
+                    <div class="pink-box" id="subjects-list"></div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="notes-block">
+                    <h3>Notes</h3>
+                    
+                    <div class="add-subject-row">
+                        <input type="text" id="new-subject-input" placeholder="New subject...">
+                        <button id="add-subject-btn">+</button>
+                    </div>
+
+                    <div class="add-subject-row">
+                        <input type="text" id="remove-subject-input" placeholder="Remove subject...">
+                        <button id="remove-subject-btn" class="remove-btn">-</button>
+                    </div>
+
+                    <div class="notes-list" id="notes-list"></div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="Subject.js"></script>
+    <script src="Home.js"></script>
+</body>
+</html>
