@@ -1,123 +1,229 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>NoteMatics Dashboard</title>
-    <link rel="stylesheet" href="Home.css">
-    <link rel="stylesheet" href="Subject.css">
-</head>
-<body>
+var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+var currentMonth = 0;
+var assignments = {};
+var defaultSubjects = ["DSAL", "INTROWEB", "CALCULUS", "OOP"];
 
-    <header class="top-banner">
-        <div class="logo-area">
-            <img src="img/logo.png" alt="Logo" class="logo-img">
-            <div class="header-text">
-                <h1>NoteMatics</h1>
-                <hr class="header-line">
-                <p>Smart note-taking meets seamless schedule reminders.</p>
-            </div>
-        </div>
-    </header>
+function changeMonth(dir) {
+    currentMonth = (currentMonth + dir + 12) % 12;
+    document.getElementById("month-title").textContent = months[currentMonth];
+    renderDays();
+}
 
-    <main class="dashboard-container">
-        
-        <section class="calendar-section">
-            <div class="month-nav">
-                <span id="prev-month-btn" class="nav-btn">&lt;</span>
-                <h2 id="month-title">Jan</h2>
-                <span id="next-month-btn" class="nav-btn">&gt;</span>
-            </div>
-
-            <div class="calendar-wrapper">
-                <table class="calendar-grid">
-                    <thead>
-                        <tr>
-                            <th>SUN</th>
-                            <th>MON</th>
-                            <th>TUE</th>
-                            <th>WED</th>
-                            <th>THU</th>
-                            <th>FRI</th>
-                            <th>SAT</th>
-                        </tr>
-                    </thead>
-                    <tbody id="calendar-body"></tbody>
-                </table>
-            </div>
-        </section>
-
-        <section class="right-panel">
+function renderDays() {
+    var calendarBody = document.getElementById("calendar-body");
+    if (!calendarBody) return;
+    calendarBody.innerHTML = "";
+    
+    var daysInMonth = new Date(2026, currentMonth + 1, 0).getDate();
+    var firstDay = new Date(2026, currentMonth, 1).getDay();
+    
+    var date = 1;
+    for (var i = 0; i < 6; i++) {
+        var row = document.createElement("tr");
+        for (var j = 0; j < 7; j++) {
+            var cell = document.createElement("td");
             
-            <div class="assignment-box">
-                <h3>Add / Remove Assignment</h3>
-                <div class="form-grid">
-                    <div class="form-col">
-                        <div class="form-row">
-                            <label>Month:</label>
-                            <input type="text" id="input-month">
-                        </div>
-                        <div class="form-row">
-                            <label>Day:</label>
-                            <input type="number" id="input-day">
-                        </div>
-                        <div class="form-row">
-                            <label>Time:</label>
-                            <input type="text" id="input-time">
-                            <select id="input-ampm" class="ampm-select">
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-col">
-                        <div class="form-row">
-                            <label>Name of Activity:</label>
-                            <input type="text" id="input-activity">
-                        </div>
-                        <div class="form-row">
-                            <label>Subject:</label>
-                            <input type="text" id="input-subject">
-                        </div>
-                        <div class="form-row btn-container">
-                            <button id="cancel-btn" class="cancel-btn">Cancel</button>
-                            <button id="remove-activity-btn" class="remove-btn">Remove activity</button>
-                            <button id="add-btn" class="add-btn">Add to calender</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            if ((i === 0 && j >= firstDay) || (i > 0 && date <= daysInMonth)) {
+                var key = months[currentMonth] + "-" + date;
+                var eventList = assignments[key] || [];
+                var eventsHTML = "";
 
-            <div class="bottom-row">
-                <div class="subjects-block">
-                    <h3>Subjects</h3>
-                    <div class="pink-box" id="subjects-list"></div>
-                </div>
+                for (var k = 0; k < eventList.length; k++) {
+                    var item = eventList[k];
+                    eventsHTML += '<div class="event-item"><div>' + item.subject + '</div><div>' + item.activity + '</div><div>' + item.time + '</div></div>';
+                }
 
-                <div class="divider"></div>
+                cell.innerHTML = '<div class="cell-header"><span>' + date + '</span>' + (eventList.length > 0 ? '<span class="red-dot"></span>' : '') + '</div><div class="event-details">' + eventsHTML + '</div>';
+                date++;
+            }
+            row.appendChild(cell);
+        }
+        calendarBody.appendChild(row);
+        if (date > daysInMonth) break;
+    }
+}
 
-                <div class="notes-block">
-                    <h3>Notes</h3>
-                    
-                    <div class="add-subject-row">
-                        <input type="text" id="new-subject-input" placeholder="New subject...">
-                        <button id="add-subject-btn">+</button>
-                    </div>
+function addAssignment() {
+    var m = document.getElementById("input-month").value.trim();
+    var d = document.getElementById("input-day").value.trim();
+    var rawTime = document.getElementById("input-time").value.trim();
+    var ampm = document.getElementById("input-ampm").value;
+    var a = document.getElementById("input-activity").value.trim();
+    var s = document.getElementById("input-subject").value.trim();
 
-                    <div class="add-subject-row">
-                        <input type="text" id="remove-subject-input" placeholder="Remove subject...">
-                        <button id="remove-subject-btn" class="remove-btn">-</button>
-                    </div>
+    if (!m || !d) {
+        alert("Enter Month and Day!");
+        return;
+    }
 
-                    <div class="notes-list" id="notes-list"></div>
-                </div>
-            </div>
+    var monthIndex = -1;
+    for (var i = 0; i < months.length; i++) {
+        if (months[i].toLowerCase() === m.toLowerCase() || 
+            months[i].toLowerCase().indexOf(m.toLowerCase().substring(0, 3)) === 0) {
+            monthIndex = i;
+            break;
+        }
+    }
 
-        </section>
+    if (monthIndex === -1) {
+        alert("Invalid month!");
+        return;
+    }
 
-    </main>
+    var formattedTime = rawTime ? rawTime + " " + ampm : "";
+    var key = months[monthIndex] + "-" + parseInt(d);
 
-    <script src="Subject.js"></script>
-    <script src="Home.js"></script>
-</body>
-</html>
+    if (!assignments[key]) assignments[key] = [];
+    assignments[key].push({ subject: s, activity: a, time: formattedTime });
+
+    if (typeof addSubjectActivity === "function") {
+        addSubjectActivity(s, a, formattedTime);
+    }
+
+    currentMonth = monthIndex;
+    document.getElementById("month-title").textContent = months[currentMonth];
+    renderDays();
+    clearForm();
+}
+
+function removeAssignment() {
+    var m = document.getElementById("input-month").value.trim();
+    var d = document.getElementById("input-day").value.trim();
+    var a = document.getElementById("input-activity").value.trim();
+    var s = document.getElementById("input-subject").value.trim();
+
+    if (!m || !d || !a) {
+        alert("Enter Month, Day, and Activity Name to remove!");
+        return;
+    }
+
+    var monthIndex = -1;
+    for (var i = 0; i < months.length; i++) {
+        if (months[i].toLowerCase() === m.toLowerCase() || 
+            months[i].toLowerCase().indexOf(m.toLowerCase().substring(0, 3)) === 0) {
+            monthIndex = i;
+            break;
+        }
+    }
+
+    if (monthIndex === -1) {
+        alert("Invalid month!");
+        return;
+    }
+
+    var key = months[monthIndex] + "-" + parseInt(d);
+
+    if (assignments[key]) {
+        assignments[key] = assignments[key].filter(function(item) {
+            return item.activity.toLowerCase().trim() !== a.toLowerCase().trim();
+        });
+        if (assignments[key].length === 0) {
+            delete assignments[key];
+        }
+    }
+
+    if (typeof removeSubjectActivity === "function") {
+        removeSubjectActivity(s, a);
+    }
+
+    currentMonth = monthIndex;
+    document.getElementById("month-title").textContent = months[currentMonth];
+    renderDays();
+    clearForm();
+}
+
+function clearForm() {
+    var ids = ["input-month", "input-day", "input-time", "input-activity", "input-subject"];
+    for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el) el.value = "";
+    }
+    document.getElementById("input-ampm").value = "AM";
+}
+
+function getSubjects() {
+    var saved = sessionStorage.getItem("tempSubjects");
+    return saved ? JSON.parse(saved) : defaultSubjects.slice();
+}
+
+function saveSubjects(list) {
+    sessionStorage.setItem("tempSubjects", JSON.stringify(list));
+}
+
+function renderNoteButtons() {
+    var container = document.getElementById("notes-list");
+    if (!container) return;
+    container.innerHTML = "";
+
+    var subjectList = getSubjects();
+    for (var i = 0; i < subjectList.length; i++) {
+        var name = subjectList[i];
+        var btn = document.createElement("button");
+        btn.className = "note-btn";
+        btn.textContent = name;
+        
+        (function(subName) {
+            btn.addEventListener("click", function() {
+                window.location.href = "Notes.html?subject=" + encodeURIComponent(subName);
+            });
+        })(name);
+
+        container.appendChild(btn);
+    }
+}
+
+function addNewSubject() {
+    var input = document.getElementById("new-subject-input");
+    var name = input.value.trim();
+    if (!name) {
+        alert("Please enter a subject name!");
+        return;
+    }
+
+    var subjectList = getSubjects();
+    subjectList.push(name);
+    saveSubjects(subjectList);
+    input.value = "";
+    renderNoteButtons();
+}
+
+function removeSubject() {
+    var input = document.getElementById("remove-subject-input");
+    var name = input.value.trim();
+    if (!name) {
+        alert("Please enter a subject name to remove!");
+        return;
+    }
+
+    var subjectList = getSubjects();
+    var index = -1;
+    for (var i = 0; i < subjectList.length; i++) {
+        if (subjectList[i].toLowerCase() === name.toLowerCase()) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index === -1) {
+        alert("Subject not found!");
+        return;
+    }
+
+    subjectList.splice(index, 1);
+    saveSubjects(subjectList);
+    input.value = "";
+    renderNoteButtons();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("prev-month-btn").addEventListener("click", function() { changeMonth(-1); });
+    document.getElementById("next-month-btn").addEventListener("click", function() { changeMonth(1); });
+    document.getElementById("cancel-btn").addEventListener("click", clearForm);
+    document.getElementById("add-btn").addEventListener("click", addAssignment);
+    document.getElementById("remove-activity-btn").addEventListener("click", removeAssignment);
+    document.getElementById("add-subject-btn").addEventListener("click", addNewSubject);
+    document.getElementById("remove-subject-btn").addEventListener("click", removeSubject);
+
+    renderDays();
+    renderNoteButtons();
+});
