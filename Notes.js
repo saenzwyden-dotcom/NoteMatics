@@ -23,6 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     closeBtn.addEventListener("click", function () {
-        window.location.href = "index.html";
+        window.location.href = "Home.html";
     });
 });
