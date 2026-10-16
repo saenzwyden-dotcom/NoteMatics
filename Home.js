@@ -58,7 +58,8 @@ function addAssignment() {
 
     var monthIndex = -1;
     for (var i = 0; i < months.length; i++) {
-        if (months[i].toLowerCase().indexOf(m.toLowerCase().substring(0, 3)) === 0) {
+        if (months[i].toLowerCase() === m.toLowerCase() || 
+            months[i].toLowerCase().indexOf(m.toLowerCase().substring(0, 3)) === 0) {
             monthIndex = i;
             break;
         }
@@ -98,7 +99,8 @@ function removeAssignment() {
 
     var monthIndex = -1;
     for (var i = 0; i < months.length; i++) {
-        if (months[i].toLowerCase().indexOf(m.toLowerCase().substring(0, 3)) === 0) {
+        if (months[i].toLowerCase() === m.toLowerCase() || 
+            months[i].toLowerCase().indexOf(m.toLowerCase().substring(0, 3)) === 0) {
             monthIndex = i;
             break;
         }
@@ -113,7 +115,7 @@ function removeAssignment() {
 
     if (assignments[key]) {
         assignments[key] = assignments[key].filter(function(item) {
-            return item.activity.toLowerCase() !== a.toLowerCase();
+            return item.activity.toLowerCase().trim() !== a.toLowerCase().trim();
         });
         if (assignments[key].length === 0) {
             delete assignments[key];
