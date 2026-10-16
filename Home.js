@@ -85,6 +85,51 @@ function addAssignment() {
     clearForm();
 }
 
+function removeAssignment() {
+    var m = document.getElementById("input-month").value.trim();
+    var d = document.getElementById("input-day").value.trim();
+    var a = document.getElementById("input-activity").value.trim();
+    var s = document.getElementById("input-subject").value.trim();
+
+    if (!m || !d || !a) {
+        alert("Enter Month, Day, and Activity Name to remove!");
+        return;
+    }
+
+    var monthIndex = -1;
+    for (var i = 0; i < months.length; i++) {
+        if (months[i].toLowerCase().indexOf(m.toLowerCase().substring(0, 3)) === 0) {
+            monthIndex = i;
+            break;
+        }
+    }
+
+    if (monthIndex === -1) {
+        alert("Invalid month!");
+        return;
+    }
+
+    var key = months[monthIndex] + "-" + parseInt(d);
+
+    if (assignments[key]) {
+        assignments[key] = assignments[key].filter(function(item) {
+            return item.activity.toLowerCase() !== a.toLowerCase();
+        });
+        if (assignments[key].length === 0) {
+            delete assignments[key];
+        }
+    }
+
+    if (typeof removeSubjectActivity === "function") {
+        removeSubjectActivity(s, a);
+    }
+
+    currentMonth = monthIndex;
+    document.getElementById("month-title").textContent = months[currentMonth];
+    renderDays();
+    clearForm();
+}
+
 function clearForm() {
     var ids = ["input-month", "input-day", "input-time", "input-activity", "input-subject"];
     for (var i = 0; i < ids.length; i++) {
@@ -173,6 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("next-month-btn").addEventListener("click", function() { changeMonth(1); });
     document.getElementById("cancel-btn").addEventListener("click", clearForm);
     document.getElementById("add-btn").addEventListener("click", addAssignment);
+    document.getElementById("remove-activity-btn").addEventListener("click", removeAssignment);
     document.getElementById("add-subject-btn").addEventListener("click", addNewSubject);
     document.getElementById("remove-subject-btn").addEventListener("click", removeSubject);
 
